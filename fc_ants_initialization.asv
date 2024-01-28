@@ -1,0 +1,25 @@
+function [ants,T]=fc_ants_initialization(Options,Pdec,cost_best)
+%**************************************************************************
+%INITIATION :
+%==========================================================================
+%read parameters
+p_eva = Options.Ants.p_eva;
+k = Options.Ants.Tmax_min.k;
+max_tree = Options.max_tree;
+nnodes = Options.nnodes;
+tank_id = Options.tank_id;
+beta = Options.Ants.beta;
+alfa = Options.Ants.alfa;
+%==========================================================================
+
+
+Tmax=1/p_eva*1/cost_best;
+Tmin=(Tmax*(1-Pdec))/(k*Pdec);
+%pheromone initiation:
+%T= ones(1,length(tree))*Tmin+ rand(1,length(tree))*(Tmax-Tmin);
+T = ones(1,size(tree))* (Tmax+Tmin)/2;
+for count_x = 1: Options.Ants.n_ants
+    [ants(count_x,:)]=fc_ConstructSolutions(nnodes,max_tree(1:3,:),...
+    tank_id,T,max_tree(4,:),alfa,beta);
+end
+%**************************************************************************
